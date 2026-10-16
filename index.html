@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISP সেটআপ ও ম্যানেজমেন্ট কোর্স</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #f0f2f5; padding-bottom: 80px; }
+    
+    .header { background: #fff; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .logo { font-size: 18px; font-weight: bold; color: #0d47a1; }
+    .cart { font-size: 13px; color: #555; }
+    
+    .card { max-width: 480px; margin: 15px auto; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* বিশেষ সুবিধার হেডার বক্স */
+    .feature-header-box {
+      background: linear-gradient(135deg, #0b1c3d 0%, #15326c 100%);
+      color: #ffffff;
+      padding: 22px 18px;
+      border-radius: 8px 8px 0 0;
+    }
+    .badge {
+      display: inline-block;
+      background: #e50914;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .feature-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffeb3b;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+    .feature-list {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .heart-note {
+      margin-top: 14px;
+      background: rgba(229, 9, 20, 0.2);
+      border: 1px solid rgba(229, 9, 20, 0.4);
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffd2d2;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .content { padding: 16px; }
+    .title { font-size: 18px; font-weight: bold; margin-bottom: 10px; line-height: 1.4; color: #111; }
+    
+    .price-box { margin-bottom: 15px; display: flex; align-items: baseline; gap: 8px; }
+    .old-price { font-size: 16px; color: #888; text-decoration: line-through; }
+    .new-price { font-size: 26px; color: #d32f2f; font-weight: bold; }
+    .badge-discount { background: #ffebee; color: #d32f2f; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    
+    .btn-buy { display: block; width: 100%; background: #e50914; color: #fff; text-align: center; padding: 14px; font-size: 18px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(229,9,20,0.3); }
+    
+    /* চেকআউট ফর্ম */
+    #checkout-section { display: none; padding-top: 15px; border-top: 2px dashed #ddd; }
+    .section-title { font-size: 16px; font-weight: bold; margin-bottom: 12px; color: #0d47a1; border-bottom: 2px solid #0d47a1; padding-bottom: 4px; }
+    
+    .cert-box { background: #fdfdfd; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px; margin-bottom: 15px; }
+    
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #333; }
+    .form-group input, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid #ced0d4; border-radius: 4px; font-size: 14px; outline: none; }
+    .form-group input:focus, .form-group select:focus { border-color: #0d47a1; }
+    
+    .notice { background: #eef3fc; border-left: 4px solid #1a73e8; padding: 12px; font-size: 13px; margin-bottom: 15px; line-height: 1.6; border-radius: 4px; }
+    .notice b { color: #d32f2f; }
+    
+    .btn-submit { width: 100%; background: #00a859; color: #fff; border: none; padding: 14px; font-size: 17px; font-weight: bold; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,168,89,0.3); }
+    .btn-submit:disabled { background: #888; cursor: not-allowed; }
+    
+    .whatsapp-btn { position: fixed; bottom: 15px; right: 15px; background: #25d366; color: #fff; padding: 10px 16px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 13px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 999; }
+  </style>
+</head>
+<body>
+
+  <!-- হেডার -->
+  <div class="header">
+    <div class="logo">NetPro Bangladesh</div>
+    <div class="cart">🛒 1 Item</div>
+  </div>
+
+  <div class="card">
+    
+    <!-- কোর্সের বিশেষ সুবিধার হাইলাইট কার্ড (ছবির বদলে এটি দেখতে দারুণ লাগবে) -->
+    <div class="feature-header-box">
+      <span class="badge">🔥 বিশেষ সুযোগ</span>
+      <h2 class="feature-title">🎯 আমাদের কোর্সের বিশেষ সুবিধা</h2>
+      
+      <div class="feature-list">
+        <div class="feature-item">
+          <span>✅</span>
+          <span><b>১. WhatsApp গ্রুপ সাপোর্ট —</b> লাইফটাইম</span>
+        </div>
+        <div class="feature-item">
+          <span>✅</span>
+          <span><b>২. কল সাপোর্ট —</b> ৬ মাস (সপ্তাহে ৬ দিন, সকাল ১০টা থেকে বিকাল ৫টা পর্যন্ত, শুক্রবার বন্ধ)</span>
+        </div>
+        <div class="feature-item">
+          <span>✅</span>
+          <span><b>৩.</b> যেকোনো সমস্যা নিয়ে প্রশ্ন ও আলোচনা করার সুযোগ</span>
+        </div>
+        <div class="feature-item">
+          <span>✅</span>
+          <span><b>৪.</b> কোর্স বুঝতে সমস্যা হলে প্রয়োজনীয় সহযোগিতা</span>
+        </div>
+        <div class="feature-item">
+          <span>✅</span>
+          <span><b>৫.</b> বাস্তব কাজের সমস্যা সমাধানে দিকনির্দেশনা</span>
+        </div>
+        <div class="feature-item">
+          <span>✅</span>
+          <span><b>৬.</b> Networking ক্যারিয়ার গড়তে প্রয়োজনীয় পরামর্শ ও সহযোগিতা</span>
+        </div>
+      </div>
+
+      <div class="heart-note">
+        ❤️ কোর্স নেওয়ার পরে আপনি একা নন, আমরা আছি সবসময় আপনার পাশে।
+      </div>
+    </div>
+
+    <div class="content">
+      <h1 class="title">মাইক্রোটিক এবং ওএলটি ব্যবহার করে শিখুন ISP সেটআপ ও ম্যানেজমেন্ট</h1>
+      
+      <div class="price-box">
+        <span class="old-price">২০০০.০০৳</span>
+        <span class="new-price">২৯৯.০০৳</span>
+        <span class="badge-discount">৮৫% ছাড়</span>
+      </div>
+
+      <!-- Buy Now বাটন -->
+      <button class="btn-buy" onclick="showForm()">Buy Now (অর্ডার করুন)</button>
+
+      <!-- অর্ডার ও সার্টিফিকেট ফর্ম -->
+      <div id="checkout-section">
+        <form id="orderForm">
+          
+          <!-- সার্টিফিকেট এর তথ্য ঘরসমূহ -->
+          <div class="cert-box">
+            <h2 class="section-title">🎓 সার্টিফিকেট নেওয়ার তথ্য দিন</h2>
+            
+            <div class="form-group">
+              <label>পূর্ণ নাম (সার্টিফিকেটের জন্য) *</label>
+              <input type="text" id="name" placeholder="আপনার পুরো নাম লিখুন" required>
+            </div>
+
+            <div class="form-group">
+              <label>জন্মতারিখ *</label>
+              <input type="date" id="dob" required>
+            </div>
+
+            <div class="form-group">
+              <label>বাবার নাম *</label>
+              <input type="text" id="fatherName" placeholder="বাবার নাম লিখুন" required>
+            </div>
+
+            <div class="form-group">
+              <label>বর্তমান ঠিকানা *</label>
+              <input type="text" id="presentAddress" placeholder="গ্রাম/রোড, থানা, জেলা" required>
+            </div>
+
+            <div class="form-group">
+              <label>স্থায়ী ঠিকানা *</label>
+              <input type="text" id="permanentAddress" placeholder="গ্রাম/রোড, থানা, জেলা" required>
+            </div>
+
+            <div class="form-group">
+              <label>মোবাইল নম্বর (হোয়াটসঅ্যাপ) *</label>
+              <input type="tel" id="phone" placeholder="01XXXXXXXXX" required>
+            </div>
+
+            <div class="form-group">
+              <label>ইমেইল অ্যাড্রেস *</label>
+              <input type="email" id="email" placeholder="আপনার সচল জিমেইল দিন" required>
+            </div>
+          </div>
+
+          <!-- পেমেন্ট তথ্য -->
+          <div class="form-group">
+            <label>পেমেন্ট মাধ্যম বেছে নিন *</label>
+            <select id="method" required>
+              <option value="bKash">বিকাশ (Send Money)</option>
+              <option value="Nagad">নগদ (Send Money)</option>
+            </select>
+          </div>
+
+          <div class="notice">
+            ⭕ <b>পেমেন্ট মেথডঃ</b><br>
+            ১। বিকাশ সেন্ড মানি: <b>01914002385</b><br>
+            ২। নগদ সেন্ড মানি: <b>01914002385</b><br><br>
+            
+            ✅ <b>ডেলিভারি পদ্ধতি:</b><br>
+            ২৯৯/- টাকা সেন্ড মানি করে নিচের ঘরে TrxID দিন। প্লেস অর্ডারে চাপ দিলেই সাথে সাথে কোর্সের ড্রাইভ লিংক পেয়ে যাবেন।<br><br>
+            
+            💬 <b>সাপোর্ট ও যেকোনো প্রয়োজনে WhatsApp করুন:</b><br>
+            নম্বর: <b>01322706206</b><br>
+            <a href="https://wa.me/8801322706206?text=Hello,%20I%20need%20support%20for%20the%20ISP%20course" target="_blank" style="display: inline-block; margin-top: 6px; background: #25d366; color: #fff; padding: 6px 14px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">
+              👉 WhatsApp এ মেসেজ দিন
+            </a>
+          </div>
+
+          <div class="form-group">
+            <label>ট্রানজেকশন আইডি (TrxID) *</label>
+            <input type="text" id="trxId" placeholder="টাকা পাঠানোর TrxID দিন" required>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-submit">Place order (অর্ডার সম্পন্ন করুন)</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WhatsApp ফ্লোটিং বাটন -->
+  <a href="https://wa.me/8801322706206" target="_blank" class="whatsapp-btn">💬 WhatsApp</a>
+
+  <script>
+    function showForm() {
+      const checkout = document.getElementById('checkout-section');
+      checkout.style.display = 'block';
+      checkout.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.innerText = "অপেক্ষা করুন, তথ্য যাচাই হচ্ছে...";
+      btn.disabled = true;
+
+      // শিটে শুধুমাত্র ইমেইল, ফোন ও পেমেন্টের তথ্য যাবে
+      const payload = {
+        data: [{
+          Timestamp: new Date().toLocaleString("en-GB", { timeZone: "Asia/Dhaka" }),
+          Email: document.getElementById('email').value,
+          Phone: document.getElementById('phone').value,
+          PaymentMethod: document.getElementById('method').value,
+          TrxID: document.getElementById('trxId').value,
+          Status: "Pending"
+        }]
+      };
+
+      fetch('https://sheetdb.io/api/v1/0iabf295pyjlp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert("ধন্যবাদ! আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ড্রাইভ লিংকে আপনাকে নিয়ে যাওয়া হচ্ছে...");
+        window.location.href = "https://drive.google.com/drive/folders/1ONYtr_25LzNKi_mwxEc3bF7km3Dq3mFO";
+      })
+      .catch(err => {
+        alert("দুঃখিত, কোনো একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+        btn.innerText = "Place order (অর্ডার সম্পন্ন করুন)";
+        btn.disabled = false;
+      });
+    });
+  </script>
+</body>
+</html>
