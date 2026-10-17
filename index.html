@@ -320,9 +320,12 @@
       })
       .then(res => res.json())
       .then(data => {
-        alert("ধন্যবাদ! আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ড্রাইভ লিংকে আপনাকে নিয়ে যাওয়া হচ্ছে...");
-        window.location.href = "https://drive.google.com/drive/folders/1ONYtr_25LzNKi_mwxEc3bF7km3Dq3mFO";
-      })
+  clearDraft();
+  const userMail = document.getElementById('email').value;
+  alert("ধন্যবাদ! আপনার পেমেন্ট তথ্য সফলভাবে গ্রহণ করা হয়েছে। ২ মিনিট থেকে ১৫ মিনিটের মধ্যে আপনার দেওয়া জিমেইলে (" + userMail + ") কোর্সের ড্রাইভ অ্যাক্সেস পাঠিয়ে দেওয়া হবে।");
+  document.getElementById('orderForm').reset();
+  btn.innerText = "অর্ডার সম্পন্ন হয়েছে ✅";
+})
       .catch(err => {
         alert("দুঃখিত, কোনো একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
         btn.innerText = "Place order (অর্ডার সম্পন্ন করুন)";
