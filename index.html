@@ -297,41 +297,40 @@
     // অর্ডার ফর্ম সাবমিট হ্যান্ডলার
     document.getElementById('orderForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      btn.innerText = "অপেক্ষা করুন, তথ্য যাচাই হচ্ছে...";
-      btn.disabled = true;
+     const btn = document.getElementById('submitBtn');
+    btn.innerText = "অপেক্ষা করুন, তথ্য যাচাই হচ্ছে...";
+    btn.disabled = true;
 
-      // শিটে শুধুমাত্র ইমেইল, ফোন ও পেমেন্টের তথ্য যাবে
-      const payload = {
-        data: [{
-          Timestamp: new Date().toLocaleString("en-GB", { timeZone: "Asia/Dhaka" }),
-          Email: document.getElementById('email').value,
-          Phone: document.getElementById('phone').value,
-          PaymentMethod: document.getElementById('method').value,
-          TrxiD: document.getElementById('trxId').value,
-          Status: "Pending"
-        }]
-      };
+    // শিটের কলাম অনুযায়ী ডেটা তৈরি
+    const payload = {
+      data: [{
+        Timestamp: new Date().toLocaleString("en-GB", { timeZone: "Asia/Dhaka" }),
+        Email: document.getElementById('email').value,
+        Phone: document.getElementById('phone').value,
+        PaymentMethod: document.getElementById('method').value,
+        TrxiD: document.getElementById('trxId').value,
+        Status: "Pending"
+      }]
+    };
 
-      fetch('https://sheetdb.io/api/v1/0iabf295pyjlp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(data => {
-  clearDraft();
-  const userMail = document.getElementById('email').value;
-  alert("ধন্যবাদ! আপনার পেমেন্ট তথ্য সফলভাবে গ্রহণ করা হয়েছে। ২ মিনিট থেকে ১৫ মিনিটের মধ্যে আপনার দেওয়া জিমেইলে (" + userMail + ") কোর্সের ড্রাইভ অ্যাক্সেস পাঠিয়ে দেওয়া হবে।");
-  document.getElementById('orderForm').reset();
-  btn.innerText = "অর্ডার সম্পন্ন হয়েছে ✅";
-})
-      .catch(err => {
-        alert("দুঃখিত, কোনো একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
-        btn.innerText = "Place order (অর্ডার সম্পন্ন করুন)";
-        btn.disabled = false;
-      });
+    fetch('https://sheetdb.io/api/v1/0iabf295pyjlp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      clearDraft();
+      alert("ধন্যবাদ! আপনার পেমেন্ট তথ্য সফলভাবে গ্রহণ করা হয়েছে। ২ মিনিট থেকে ১৫ মিনিটের মধ্যে আপনার দেওয়া জিমেইলে কোর্সের ড্রাইভ অ্যাক্সেস পাঠিয়ে দেওয়া হবে।");
+      document.getElementById('orderForm').reset();
+      btn.innerText = "অর্ডার সম্পন্ন হয়েছে ✅";
+    })
+    .catch(err => {
+      alert("দুঃখিত, কোনো একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+      btn.innerText = "Place order (অর্ডার সম্পন্ন করুন)";
+      btn.disabled = false;
     });
-  </script>
+  });
+</script>
 </body>
 </html>
