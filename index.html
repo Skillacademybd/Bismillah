@@ -320,11 +320,13 @@
     })
     .then(res => res.json())
     .then(data => {
-      clearDraft();
-      alert("ধন্যবাদ! আপনার পেমেন্ট তথ্য সফলভাবে গ্রহণ করা হয়েছে। ২ মিনিট থেকে ১৫ মিনিটের মধ্যে আপনার দেওয়া জিমেইলে কোর্সের ড্রাইভ অ্যাক্সেস পাঠিয়ে দেওয়া হবে।");
-      document.getElementById('orderForm').reset();
-      btn.innerText = "অর্ডার সম্পন্ন হয়েছে ✅";
-    })
+        alert("ধন্যবাদ! আপনার পেমেন্ট তথ্য সফলভাবে গ্রহণ করা হয়েছে। ২ মিনিট থেকে ১৫ মিনিটের মধ্যে আপনার দেওয়া জিমেইলে কোর্সের ড্রাইভ অ্যাক্সেস পাঠিয়ে দেওয়া হবে।");
+        try {
+          const formEl = document.getElementById('orderForm');
+          if (formEl) formEl.reset();
+        } catch (e) {}
+        btn.innerText = "অর্ডার সম্পন্ন হয়েছে ✅";
+      })
     .catch(err => {
       alert("দুঃখিত, কোনো একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
       btn.innerText = "Place order (অর্ডার সম্পন্ন করুন)";
