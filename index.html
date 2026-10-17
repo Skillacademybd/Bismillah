@@ -297,7 +297,7 @@
     // অর্ডার ফর্ম সাবমিট হ্যান্ডলার
     document.getElementById('orderForm').addEventListener('submit', function(e) {
       e.preventDefault();
-     const btn = document.getElementById('submitBtn');
+    const btn = document.getElementById('submitBtn');
     btn.innerText = "অপেক্ষা করুন, তথ্য যাচাই হচ্ছে...";
     btn.disabled = true;
 
@@ -305,10 +305,10 @@
     const payload = {
       data: [{
         Timestamp: new Date().toLocaleString("en-GB", { timeZone: "Asia/Dhaka" }),
-        Email: document.getElementById('email').value,
-        Phone: document.getElementById('phone').value,
-        PaymentMethod: document.getElementById('method').value,
-        TrxiD: document.getElementById('trxId').value,
+        Email: document.getElementById('email') ? document.getElementById('email').value : '',
+        Phone: document.getElementById('phone') ? document.getElementById('phone').value : '',
+        PaymentMethod: document.getElementById('method') ? document.getElementById('method').value : '',
+        TrxiD: document.getElementById('trxId') ? document.getElementById('trxId').value : '',
         Status: "Pending"
       }]
     };
@@ -320,19 +320,58 @@
     })
     .then(res => res.json())
     .then(data => {
-        alert("ধন্যবাদ! আপনার পেমেন্ট তথ্য সফলভাবে গ্রহণ করা হয়েছে। ২ মিনিট থেকে ১৫ মিনিটের মধ্যে আপনার দেওয়া জিমেইলে কোর্সের ড্রাইভ অ্যাক্সেস পাঠিয়ে দেওয়া হবে।");
-        try {
-          const formEl = document.getElementById('orderForm');
-          if (formEl) formEl.reset();
-        } catch (e) {}
-        btn.innerText = "অর্ডার সম্পন্ন হয়েছে ✅";
-      })
+      // প্রথম জমকালো পপআপ দেখানো
+      document.getElementById('orderSuccessModal').style.display = 'flex';
+
+      try {
+        const formEl = document.getElementById('orderForm');
+        if (formEl) formEl.reset();
+      } catch (e) {}
+
+      btn.innerText = "অর্ডার সম্পন্ন হয়েছে ✅";
+    })
     .catch(err => {
       alert("দুঃখিত, কোনো একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
       btn.innerText = "Place order (অর্ডার সম্পন্ন করুন)";
       btn.disabled = false;
     });
   });
+
+  // "ঠিক আছে" চাপলে দ্বিতীয় মেসেজ আসার ফাংশন
+  function handleModalClose() {
+    document.getElementById('orderSuccessModal').style.display = 'none';
+    alert("আপনার মেইলের ইনবক্স চেক করুন (প্রয়োজনে স্প্যাম ফোল্ডারও দেখুন) 📩");
+  }
 </script>
+
+<!-- জমকালো পপআপ ডিজাইন -->
+<div id="orderSuccessModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); z-index: 999999; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px);">
+  <div style="background: #ffffff; width: 100%; max-width: 380px; border-radius: 18px; padding: 26px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); animation: zoomInPopup 0.25s ease-out;">
+    
+    <!-- সবুজ টিক আইকন -->
+    <div style="width: 65px; height: 65px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; border: 2.5px solid #2e7d32;">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+
+    <!-- মূল টেক্সট -->
+    <p style="color: #222222; font-size: 16px; line-height: 1.6; font-weight: 500; margin: 0 0 22px 0;">
+      ধন্যবাদ! আপনার পেমেন্ট তথ্য সফলভাবে গ্রহণ করা হয়েছে। ২ মিনিট থেকে ১৫ মিনিটের মধ্যে আপনার দেওয়া জিমেইলে কোর্সের ড্রাইভ অ্যাক্সেস পাঠিয়ে দেওয়া হবে।
+    </p>
+
+    <!-- বাটন -->
+    <button onclick="handleModalClose()" style="background: #16a34a; color: #ffffff; border: none; padding: 12px 30px; font-size: 15px; font-weight: 600; border-radius: 10px; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);">
+      ঠিক আছে
+    </button>
+  </div>
+</div>
+
+<style>
+@keyframes zoomInPopup {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+</style>
 </body>
 </html>
